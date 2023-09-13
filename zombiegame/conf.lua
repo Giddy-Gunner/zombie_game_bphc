@@ -12,4 +12,5 @@ function love.conf(t)
     t.window.maxwidth = 720
     t.window.vsync = true
     
+    
 end
