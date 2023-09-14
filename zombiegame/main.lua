@@ -25,7 +25,7 @@ function love.load()
         x = love.graphics.getWidth() / 2,
         y = love.graphics.getWidth() / 2,
 	    
-	    sprite = love.graphics.newImage("assets/8direction.png"),
+	    sprite = love.graphics.newImage("8direction.png"),
         animation = {
             direction = "undefined",
             idle =false,
@@ -188,12 +188,14 @@ function love.draw()
         love.graphics.print(knight.y,10,10)
         
         fps = love.timer.getFPS( )
+        love.graphics.setColor(0,0,0)
+        
         love.graphics.print("FPS: "..fps , love.graphics.getWidth()-50, 0)
     
-        love.graphics.scale(1)
+        
 
-        love.graphics.setColor(0,0,0)
-        love.graphics.print("sprite_frame: "..knight.animation.frame , love.graphics.getWidth()-100, 0)
+        
+        love.graphics.print("sprite_frame: "..knight.animation.frame , love.graphics.getWidth()-200, 0)
         love.graphics.setColor(1,1,1)
     end
         
