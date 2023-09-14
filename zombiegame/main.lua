@@ -12,7 +12,7 @@ function love.load()
 
     cursor = {
         x = 0,
-        y=0
+        y= 0
     }
     
     love.mouse.setVisible(false)
@@ -21,17 +21,20 @@ function love.load()
 
     background = love.graphics.newImage("assets/BG.jpg")
     knight = {
-        x = 0,
-        y = 0,
-        sprite = love.graphics.newImage("assets/actualspritesheet.png"),
+
+        x = love.graphics.getWidth() / 2,
+        y = love.graphics.getWidth() / 2,
+	    
+	    sprite = love.graphics.newImage("assets/8direction.png"),
         animation = {
             direction = "undefined",
-            idle =true,
+            idle =false,
             frame = 1,
-            max_frames = 11,
-            speed = 5,
-            timer = 0.1
-
+            max_frames_x = 4,
+            max_frames_y = 8,
+            max_frames = 4,
+            speed = 1,
+            timer = 0.1,
         }
     
     }
@@ -40,19 +43,16 @@ function love.load()
 
     table.insert(zombies,1,zombie())
     
-    sprite_width= 1320 
-    sprite_height = 80
+    sprite_width= 128 
+    sprite_height = 256
 
 
-    quad_width = 120
-    quad_height = 80
+    quad_width = 32
+    quad_height = 32
+
     --love.graphics.newQuad(0,0,quad_width,quad_height,sprite_width,sprite_height)
 
     quad = {}
-
-    for i = 1, knight.animation.max_frames do
-        quad[i]=love.graphics.newQuad((quad_width*(i-1)),0,quad_width,quad_height,sprite_width,sprite_height)
-    end
 
 end
 
@@ -63,21 +63,33 @@ function love.update(dt)
         knight.y = knight.y - knight.animation.speed
         knight.animation.idle = false
         knight.animation.direction = "up"
+        for i = 1, 4 do
+            quad[i]=love.graphics.newQuad((quad_width*(i-1)),160,quad_width,quad_height,sprite_width,sprite_height)
+        end
     end
     if love.keyboard.isDown("s") then
         knight.y = knight.y + knight.animation.speed
         knight.animation.idle = false
         knight.animation.direction = "down"
+        for i = 1, 4 do
+            quad[i]=love.graphics.newQuad((quad_width*(i-1)),0,quad_width,quad_height,sprite_width,sprite_height)
+        end
     end
     if love.keyboard.isDown("a") then
         knight.x = knight.x - knight.animation.speed
         knight.animation.idle = false
         knight.animation.direction = "left"
+        for i = 1, 4 do
+            quad[i]=love.graphics.newQuad((quad_width*(i-1)),96,quad_width,quad_height,sprite_width,sprite_height)
+        end
     end
     if love.keyboard.isDown("d") then
         knight.x = knight.x + knight.animation.speed
         knight.animation.idle = false
         knight.animation.direction = "right"
+        for i = 1, 4 do
+            quad[i]=love.graphics.newQuad((quad_width*(i-1)),128,quad_width,quad_height,sprite_width,sprite_height)
+        end
     end
 
 
@@ -103,7 +115,7 @@ function love.update(dt)
             knight.animation.timer = 0.1
             knight.animation.frame = knight.animation.frame + 1
             if knight.animation.frame > knight.animation.max_frames then
-                knight.animation.frame = 2
+                knight.animation.frame = 1
             end
         end
 
@@ -153,16 +165,15 @@ function love.draw()
         end
         
         
-
+        
         if knight.animation.direction == "right" then
-            
             love.graphics.draw(knight.sprite, quad[knight.animation.frame],knight.x,knight.y)
         end
         if knight.animation.direction == "left" then
-            love.graphics.draw(knight.sprite, quad[knight.animation.frame],knight.x,knight.y, 0, -1, 1, quad_width, 0)   
+            love.graphics.draw(knight.sprite, quad[knight.animation.frame],knight.x+quad_width,knight.y, 0, 1, 1, quad_width, 0)   
         end
         if knight.animation.direction == "up" then
-            love.graphics.draw(knight.sprite, quad[knight.animation.frame],knight.x,knight.y+quad_width, 3.1415, 1, 1, quad_width, 0)   
+            love.graphics.draw(knight.sprite, quad[knight.animation.frame],knight.x+quad_width,knight.y, 0, 1, 1, quad_width, 0)   
         end
         if knight.animation.direction == "down" then
             love.graphics.draw(knight.sprite, quad[knight.animation.frame],knight.x+quad_width,knight.y, 0, 1, 1, quad_width, 0)   
@@ -180,6 +191,10 @@ function love.draw()
         love.graphics.print("FPS: "..fps , love.graphics.getWidth()-50, 0)
     
         love.graphics.scale(1)
+
+        love.graphics.setColor(0,0,0)
+        love.graphics.print("sprite_frame: "..knight.animation.frame , love.graphics.getWidth()-100, 0)
+        love.graphics.setColor(1,1,1)
     end
         
 
